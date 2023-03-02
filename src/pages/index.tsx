@@ -20,7 +20,7 @@ export default function Home() {
       signer = await provider.getSigner();
       const address = await signer.getAddress();
       console.log(address);
-      const usdcToken = "0xe6b8a5CF854791412c1f6EFC7CAf629f5Df1c747"; // USDC token address on Polygon Testnet
+      const usdcToken = "0xE097d6B3100777DC31B34dC2c58fB524C2e76921"; // Some random USDC token address on Polygon Testnet
       let abi = [
         "function decimals() view returns (uint8)",
         "function balanceOf(address a) view returns (uint)",
@@ -50,7 +50,7 @@ export default function Home() {
         console.log(receipt.status);
         setStatus("Transaction failed!");
       } else {
-        setStatus("Transaction succeeded!");
+        setStatus("Transaction successful!");
       }
     } catch (error: any) {
       alert("Error sending token");
@@ -70,7 +70,7 @@ export default function Home() {
             </div>
           ) : (
             <button
-              className="bg-purple-600 hover:bg-purple-400 text-white py-2 px-4 rounded"
+              className="bg-purple-600 hover:bg-purple-400 text-white mx-8 my-4 py-2 px-4 rounded"
               onClick={connectToWallet}
             >
               Connect to MetaMask
