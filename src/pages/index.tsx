@@ -41,7 +41,7 @@ export default function Home() {
     // const usdcContract = new ethers.Contract(usdcToken, abi, signer);
     await connectToWallet();
     console.log(contract, usdcContract);
-    const amount = ethers.parseUnits("1", 6);
+    const amount = ethers.parseUnits("1.0", 6);
     try {
       const tx = await usdcContract.transfer(contract, amount);
       const receipt = await tx.wait();
@@ -61,15 +61,16 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-purple-800 flex flex-row justify-center items-center">
       <div className="max-w-sm rounded overflow-hidden shadow-lg bg-purple-500 p-8 rounded-lg">
-        <div className="items-center px-6 py-4">
+        <div className="px-6 py-4">
           {account ? (
-            <div className="text-center mb-4">
-              Connected to {account}.<br />
-              USDC balance: {usdcBalance} USDC.
+            <div className="relative left-10 text-white text-l font-bold mb-4">
+              Connected to: {account}
+              <br />
+              USDC balance: {usdcBalance} USDC
             </div>
           ) : (
             <button
-              className="bg-purple-800 hover:bg-purple-400 text-white py-2 px-4 rounded"
+              className="bg-purple-600 hover:bg-purple-400 text-white py-2 px-4 rounded"
               onClick={connectToWallet}
             >
               Connect to MetaMask
@@ -87,7 +88,9 @@ export default function Home() {
           >
             Send USDC
           </button>
-          <div className="relative text-center mb-4">{status}</div>
+          <div className="relative top-6 right-2 text-center text-white text-l font-bold mb-4">
+            {status}
+          </div>
         </div>
       </div>
     </div>
