@@ -6,7 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
-  const [contract, setContract] = useState<string>("");
+  const [receiver, setReceiver] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
 
   const [status, setStatus] = useState<string>("");
@@ -31,8 +31,7 @@ export default function Home() {
     }
   });
 
-  const sendUsdc = async (address: string) => {
-    // const usdcContract = new ethers.Contract(usdcToken, abi, signer);
+  const transfer = async () => {
     try {
       const contract = new ethers.Contract(
         contractAddress,
@@ -40,16 +39,18 @@ export default function Home() {
         signer || provider
       );
       const tx = await contract.transfer(
-        contract,
+        receiver,
         ethers.utils.parseEther(amount)
       );
       console.log(tx);
       successnotify();
     } catch (e) {
       console.log(e);
+      console.log(amount)
       failnotify();
     }
   };
+
   const mint = async () => {
     try {
       const contract = new ethers.Contract(
@@ -88,17 +89,17 @@ export default function Home() {
           className="shadow appearance-none border rounded w-1/2 h-10 px-2 py-2 mb-4 mt-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-purple-200"
           type="text"
           placeholder="Contract Address"
-          onChange={(e) => setAmount(e.target.value)}
+          onChange={(e) => setReceiver(e.target.value)}
         />
         <input
           className="shadow appearance-none border rounded w-1/2 h-10 px-4 py-2 mb-4 mt-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-purple-200"
           type="text"
           placeholder="Amount"
-          onChange={(e) => setContract(e.target.value)}
+          onChange={(e) => setAmount(e.target.value)}
         />
         <button
           className="bg-purple-600 hover:bg-purple-400 text-white py-2 px-4 rounded"
-          onClick={() => sendUsdc(contract)}
+          onClick={() => transfer()}
         >
           Send USDC
         </button>
