@@ -6,8 +6,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
-  const [usdcBalance, setUsdcBalance] = useState<number | null>(null);
   const [contract, setContract] = useState<string>("");
+  const [amount, setAmount] = useState<string>("");
+
   const [status, setStatus] = useState<string>("");
   const [contractAddress, setContractAddress] = useState<any>("");
 
@@ -56,7 +57,7 @@ export default function Home() {
         ["function mint(address, uint256)"],
         signer || provider
       );
-      const tx = await contract.mint(address, ethers.utils.parseEther("1000"));
+      const tx = await contract.mint(address, ethers.utils.parseEther(amount));
       console.log(tx);
       successnotify();
     } catch (e) {
@@ -66,44 +67,50 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-purple-800 flex flex-row justify-center items-center">
-      <div className="w-1/2 h-1/2 rounded flex flex-col justify-center items-center shadow-lg bg-purple-500 p-8 rounded-lg">
-        <div>
-          <div className="relative left-20">
-            <ConnectButton />
+    <div className="bg-purple-800 flex flex-col justify-center items-center w-screen h-screen">
+      <p className="text-2xl font-bold text-white pb-4">Purple Pay</p>
+
+      <ToastContainer />
+      <div className="rounded  w-1/2 h-1/2  flex flex-col justify-center items-center shadow-lg bg-purple-500 rounded-lg">
+        <ConnectButton />
+
+        {isLoading ? (
+          <div className="text-white text-l font-bold mb-4 p-4">
+            Fetching balance…
           </div>
-          {isLoading ? (
-            <div className="relative left-16 text-white text-l font-bold mb-4 p-4">
-              Fetching balance…
-            </div>
-          ) : (
-            <div className="relative left-16 text-white text-l font-bold mb-4 p-4">
-              USDC balance: {data?.formatted} USDC
-            </div>
-          )}
-          <ToastContainer />
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-purple-200"
-            type="text"
-            placeholder="Contract Address"
-            onChange={(e) => setContract(e.target.value)}
-          />
-          <button
-            className="relative left-24 top-4 bg-purple-600 hover:bg-purple-400 text-white py-2 px-4 rounded"
-            onClick={() => sendUsdc(contract)}
-          >
-            Send USDC
-          </button>
-          <div className="relative top-6 right-2 text-center text-white text-l font-bold mb-4">
-            {status}
+        ) : (
+          <div className="text-white text-l font-bold mb-4 p-4">
+            USDC balance: {data?.formatted} USDC
           </div>
-          <button
-            onClick={() => mint()}
-            className="relative left-20 top-4 bg-purple-600 hover:bg-purple-400 text-white py-2 px-4 rounded"
-          >
-            Mint 1000 USDC
-          </button>
+        )}
+
+        <input
+          className="shadow appearance-none border rounded w-1/2 h-10 px-2 py-2 mb-4 mt-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-purple-200"
+          type="text"
+          placeholder="Contract Address"
+          onChange={(e) => setAmount(e.target.value)}
+        />
+        <input
+          className="shadow appearance-none border rounded w-1/2 h-10 px-4 py-2 mb-4 mt-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-purple-200"
+          type="text"
+          placeholder="Amount"
+          onChange={(e) => setContract(e.target.value)}
+        />
+        <button
+          className="bg-purple-600 hover:bg-purple-400 text-white py-2 px-4 rounded"
+          onClick={() => sendUsdc(contract)}
+        >
+          Send USDC
+        </button>
+        <div className="text-center text-white text-l font-bold mb-4">
+          {status}
         </div>
+        <button
+          onClick={() => mint()}
+          className="bg-purple-600 hover:bg-purple-400 text-white py-2 px-4 rounded"
+        >
+          Mint 1000 USDC
+        </button>
       </div>
     </div>
   );
