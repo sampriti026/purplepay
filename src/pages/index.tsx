@@ -41,7 +41,7 @@ export default function Home() {
       );
       const tx = await contract.transfer(
         contract,
-        ethers.utils.parseEther("1.0")
+        ethers.utils.parseEther(amount)
       );
       console.log(tx);
       successnotify();
@@ -57,7 +57,7 @@ export default function Home() {
         ["function mint(address, uint256)"],
         signer || provider
       );
-      const tx = await contract.mint(address, ethers.utils.parseEther(amount));
+      const tx = await contract.mint(address, ethers.utils.parseEther("1000"));
       console.log(tx);
       successnotify();
     } catch (e) {
